@@ -134,9 +134,9 @@
                 </form>
               <!-- /.box-body -->
             </div>
-
-        <div class="box">
-          <?php if($this->session->flashdata('successsku2')): ?>
+<!--     Remover productos multiples                       -->
+          <div class="box">
+            <?php if($this->session->flashdata('successsku2')): ?>
               <div class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php echo $this->session->flashdata('successsku2'); ?>
@@ -149,39 +149,69 @@
             <?php endif; ?>
             <?php $this->session->set_flashdata('errorsku2', FALSE) ?>
             <?php $this->session->set_flashdata('successsku2', FALSE) ?>
-          <div class="box-header">
-            <h3 class="box-title">Remover Producto(s) ya existentes</h3>
+            <div class="box-header">
+              <h3 class="box-title">Add Order</h3>
+            </div>
+            <!-- /.box-header -->
+            <form role="form" action="<?php base_url('dashboard/substractmultiplebysku') ?>" method="post" class="form-horizontal">
+                <div class="box-body">
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('Y-m-d') ?></label>
+                  </div>
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('h:i a') ?></label>
+                  </div>
+
+                  <br /> <br/>
+                  <table class="table table-bordered" id="product_info_table">
+                    <thead>
+                      <tr>
+                        <th style="width:40%">SKU</th>
+                        <th style="width:40%">Producto</th>
+                        <th style="width:10%">Cantidad</th>
+                        <th style="width:20%">Precio unidad</th>
+                        <th style="width:10%">Eliminar</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr id="row_1">
+                        <td>
+                        <input type="text" class="form-control" id="skudelete" name="skudelete" placeholder="Enter sku" autocomplete="off" />
+                          </td>
+                          <td><select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
+                            <option value=""></option>
+                            <?php foreach ($products as $k => $v): ?>
+                              <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                            <?php endforeach ?>
+                          </select></td>
+                          <td>
+                            <input type="text" value="1" name="qtydelete" id="qtydelete" class="form-control" autocomplete="off">
+                          </td>
+                          <td>
+                            <input type="text" name="amountdelete" id="amountdelete" class="form-control" disabled autocomplete="off">
+                          </td>
+                          <td><button type="button" class="btn btn-default" onclick="removeRow('1')"><i class="fa fa-close"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <br /> <br/>
+
+                  <div class="col-md-6 col-xs-12 pull pull-right">
+
+
+                  </div>
+                </div>
+                <!-- /.box-body -->
+
+              
+              </form>
+            <!-- /.box-body -->
           </div>
-          <!-- /.box-header -->
-          <form role="form" action="<?php echo base_url('dashboard/substractbysku') ?>" method="post" enctype="multipart/form-data">
-              <div class="box-body">
-
-                <?php echo validation_errors(); ?>
-
-                <div class="form-group">
-                  <label for="sku_create">SKU</label>
-                  <input type="text" class="form-control" id="skudelete" name="skudelete" placeholder="Enter sku" autocomplete="off" />
-                </div>
-
-                <div>
-                  <label for="sku_create">Nombre del producto</label>
-                  <input type="text" class="form-control" id="namedelete" name="namedelete" placeholder="Enter sku" autocomplete="off" disabled />
-                </div>
-
-                <div class="form-group">
-                  <label for="qty_create">Qty</label>
-                  <input value="1" type="text" class="form-control" id="qtydelete" name="qtydelete" placeholder="Enter Qty" autocomplete="off" />
-                </div>
-
-              </div>
-              <!-- /.box-body -->
-
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-              </div>
-            </form>
-          <!-- /.box-body -->
-        </div>
+<!--   END  Remover productos multiples                       -->
+            
 
        
 
@@ -195,8 +225,53 @@
     var namecreate = document.getElementById("namecreate");
     var skudelete = document.getElementById("skudelete");
     var namedelete = document.getElementById("namedelete");
+    var base_url = "<?php echo base_url(); ?>";
+
     $(document).ready(function() {
       $("#dashboardMainMenu").addClass('active');
+
+      $("#add_row").unbind('click').bind('click', function() {
+      var table = $("#product_info_table");
+      var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+      var row_id = count_table_tbody_tr + 1;
+
+      $.ajax({
+          url: base_url + '/orders/getTableProductRow/',
+          type: 'post',
+          dataType: 'json',
+          success:function(response) {
+            
+              // console.log(reponse.x);
+               var html = '<tr id="row_'+row_id+'">'+
+                   '<td>'+ 
+                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                        '<option value=""></option>';
+                        $.each(response, function(index, value) {
+                          html += '<option value="'+value.id+'">'+value.name+'</option>';             
+                        });
+                        
+                      html += '</select>'+
+                    '</td>'+ 
+                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')"></td>'+
+                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" disabled><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-close"></i></button></td>'+
+                    '</tr>';
+
+                if(count_table_tbody_tr >= 1) {
+                $("#product_info_table tbody tr:last").after(html);  
+              }
+              else {
+                $("#product_info_table tbody").html(html);
+              }
+
+              $(".product").select2();
+
+          }
+        });
+
+      return false;
+    });
       
     }); 
     
