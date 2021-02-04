@@ -178,19 +178,19 @@
                     <tbody>
                       <tr id="row_1">
                         <td>
-                        <input type="text" class="form-control" id="skudelete" name="skudelete" placeholder="Enter sku" autocomplete="off" />
+                        <input type="text" class="form-control" id="skudelete_1" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />
                           </td>
-                          <td><select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
+                          <td><select class="form-control select_group product" data-row-id="row_1" id="namedelete_1" name="namedelete[]" style="width:100%;" onchange="newRow();" required>
                             <option value=""></option>
                             <?php foreach ($products as $k => $v): ?>
                               <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
                             <?php endforeach ?>
                           </select></td>
                           <td>
-                            <input type="text" value="1" name="qtydelete" id="qtydelete" class="form-control" autocomplete="off">
+                            <input type="text" value="1" name="qtydelete[]" id="qtydelete_1" class="form-control" autocomplete="off">
                           </td>
                           <td>
-                            <input type="text" name="amountdelete" id="amountdelete" class="form-control" disabled autocomplete="off">
+                            <input type="text" name="amountdelete[]" id="amountdelete_1" class="form-control" disabled autocomplete="off">
                           </td>
                           <td><button type="button" class="btn btn-default" onclick="removeRow('1')"><i class="fa fa-close"></i></button></td>
                       </tr>
@@ -229,49 +229,7 @@
 
     $(document).ready(function() {
       $("#dashboardMainMenu").addClass('active');
-
-      $("#add_row").unbind('click').bind('click', function() {
-      var table = $("#product_info_table");
-      var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-      var row_id = count_table_tbody_tr + 1;
-
-      $.ajax({
-          url: base_url + '/orders/getTableProductRow/',
-          type: 'post',
-          dataType: 'json',
-          success:function(response) {
-            
-              // console.log(reponse.x);
-               var html = '<tr id="row_'+row_id+'">'+
-                   '<td>'+ 
-                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
-                        '<option value=""></option>';
-                        $.each(response, function(index, value) {
-                          html += '<option value="'+value.id+'">'+value.name+'</option>';             
-                        });
-                        
-                      html += '</select>'+
-                    '</td>'+ 
-                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')"></td>'+
-                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" disabled><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-close"></i></button></td>'+
-                    '</tr>';
-
-                if(count_table_tbody_tr >= 1) {
-                $("#product_info_table tbody tr:last").after(html);  
-              }
-              else {
-                $("#product_info_table tbody").html(html);
-              }
-
-              $(".product").select2();
-
-          }
-        });
-
-      return false;
-    });
+      $(".product").select2();
       
     }); 
     
@@ -322,5 +280,57 @@
     });
       }
     });
+
+    function newRow(){
+      var table = $("#product_info_table");
+      var count_table_tbody_tr = $("#product_info_table tbody tr:last")[0].id.slice(4,$("#product_info_table tbody tr:last")[0].id.length);
+      var row_id = parseInt(count_table_tbody_tr) + 1;
+
+      $.ajax({
+            url: base_url + '/dashboard/getTableProductRow/',
+            type: 'post',
+            dataType: 'text',
+            success:function(response) {
+              
+                var html = '<tr id="row_'+row_id+'">' +
+                        '<td>' +
+                        '<input type="text" class="form-control" id="skudelete_'+row_id+'" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />' +
+                          '</td>' +
+                          '<td><select class="form-control select_group product" data-row-id="row_'+row_id+'" id="namedelete_'+row_id+'" name="namedelete[]" style="width:100%;" onchange="newRow();" required>' +
+                            '<option value=""></option>';
+                $.each(JSON.parse(response), function(index, value) {
+                  html += '<option value="'+value.id+'">'+value.name+'</option>';
+                });
+
+                html += '</select></td>' +
+                          '<td>' +
+                            '<input type="text" value="1" name="qtydelete[]" id="qtydelete_'+row_id+'" class="form-control" autocomplete="off">' +
+                          '</td>' +
+                          '<td>' +
+                            '<input type="text" name="amountdelete[]" id="amountdelete_'+row_id+'" class="form-control" disabled autocomplete="off">' +
+                          '</td>' +
+                          '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-close"></i></button></td>' +
+                      '</tr>';
+                  
+                  if(count_table_tbody_tr >= 1) {
+                  $("#product_info_table tbody tr:last").after(html);  
+                }
+                else {
+                  $("#product_info_table tbody").html(html);
+                }
+
+                $(".product").select2();
+
+            }
+          });
+
+    }
+
+    function removeRow(tr_id)
+  {
+    
+    console.log($("#product_info_table tbody tr#row_"+tr_id));
+    $("#product_info_table tbody tr#row_"+tr_id).remove();
+  }
     
   </script>

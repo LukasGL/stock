@@ -30,8 +30,9 @@ class Dashboard extends Admin_Controller
 		$this->data['total_stores'] = $this->model_stores->countTotalStores();
 
 		$user_id = $this->session->userdata('id');
-		$is_admin = ($user_id == 1) ? true :false;
-
+        $is_admin = ($user_id == 1) ? true :false;
+        
+        $this->data['products'] = $this->model_products->getActiveProductData();      	
         $this->data['is_admin'] = $is_admin;
 		$this->render_template('dashboard', $this->data);
     }
@@ -98,6 +99,17 @@ class Dashboard extends Admin_Controller
             redirect('dashboard/' , 'refresh');
         }   
     }
+
+    /*
+	* It gets the all the active product inforamtion from the product table 
+	* This function is used in the order page, for the product selection in the table
+	* The response is return on the json format.
+	*/
+	public function getTableProductRow()
+	{
+		$products = $this->model_products->getActiveProductData();
+		echo json_encode($products);
+	}
     
     public function substractbysku()
 	{      
