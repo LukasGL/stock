@@ -42,8 +42,10 @@ class Model_products extends CI_Model
 		if ($sku){
 			$sql = "SELECT * FROM products WHERE sku = ? ORDER BY id DESC";
 			$query = $this->db->query($sql, array($sku));
-			return $query->result_array();
+			return $query->row_array();
 		}
+
+		return null;
 	}
 
 	public function create($data)

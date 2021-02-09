@@ -178,9 +178,9 @@
                     <tbody>
                       <tr id="row_1">
                         <td>
-                        <input type="text" class="form-control" id="skudelete_1" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />
+                        <input type="text" class="form-control" id="skudelete_1" oninput="selectProductBySku('1')" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />
                           </td>
-                          <td><select class="form-control select_group product" data-row-id="row_1" id="namedelete_1" name="namedelete[]" style="width:100%;" onchange="newRow();" required>
+                          <td><select class="form-control select_group product" data-row-id="row_1" id="namedelete_1" name="namedelete[]" style="width:100%;" onchange="selectProductByName('1');" required>
                             <option value=""></option>
                             <?php foreach ($products as $k => $v): ?>
                               <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
@@ -281,6 +281,56 @@
       }
     });
 
+    function selectProductBySku(row_id){
+      if ($("#skudelete_"+row_id).val()!=""){
+          $.ajax({
+            url: base_url + 'dashboard/getbysku',
+            type: 'post',
+            data:{skucreate:$("#skudelete_"+row_id).val()},
+            dataType: 'json',
+            success: function(data) {
+                if (data!=null) {
+                console.log(data);   
+                $("#amountdelete_"+row_id).val(data.price);
+                $("#namedelete_"+row_id).val(data.id).change();
+                //if (typeof table != "undefined"){
+                  //namedelete.value = table[1];
+                //} else {
+                  //namedelete.value = "";
+                //}
+                }
+            },
+            error: function(thrownError) {
+                alert(JSON.stringify(thrownError));
+            }
+            
+        });
+      }
+    }
+
+    function selectProductByName(row_id){
+      var product_id = $("#namedelete_"+row_id).val();    
+      if(product_id == "") {
+        $("#skudelete_"+row_id).val("");
+        $("#qtydelete_"+row_id).val("");       
+        $("#amountdelete_"+row_id).val("");
+      } else {
+        $.ajax({
+          url: base_url + 'orders/getProductValueById',
+          type: 'post',
+          data: {product_id : product_id},
+          dataType: 'json',
+          success:function(response) {
+            // setting the rate value into the rate input field
+            $("#skudelete_"+row_id).val(response.sku);  
+            $("#skudelete_"+row_id).prop( "disabled", true );
+            $("#amountdelete_"+row_id).val(response.price);
+            newRow();
+          } // /success
+        }); // /ajax function to fetch the product data 
+      }
+    }
+
     function newRow(){
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr:last")[0].id.slice(4,$("#product_info_table tbody tr:last")[0].id.length);
@@ -294,9 +344,9 @@
               
                 var html = '<tr id="row_'+row_id+'">' +
                         '<td>' +
-                        '<input type="text" class="form-control" id="skudelete_'+row_id+'" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />' +
+                        '<input type="text" class="form-control" id="skudelete_'+row_id+'" oninput="selectProductBySku(\''+row_id+'\')" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />' +
                           '</td>' +
-                          '<td><select class="form-control select_group product" data-row-id="row_'+row_id+'" id="namedelete_'+row_id+'" name="namedelete[]" style="width:100%;" onchange="newRow();" required>' +
+                          '<td><select class="form-control select_group product" data-row-id="row_'+row_id+'" id="namedelete_'+row_id+'" name="namedelete[]" style="width:100%;" onchange="selectProductByName(\''+row_id+'\');" required>' +
                             '<option value=""></option>';
                 $.each(JSON.parse(response), function(index, value) {
                   html += '<option value="'+value.id+'">'+value.name+'</option>';
@@ -320,6 +370,8 @@
                 }
 
                 $(".product").select2();
+                $("#skudelete_"+row_id).select();
+              
 
             }
           });
@@ -329,7 +381,6 @@
     function removeRow(tr_id)
   {
     
-    console.log($("#product_info_table tbody tr#row_"+tr_id));
     $("#product_info_table tbody tr#row_"+tr_id).remove();
   }
     

@@ -42,15 +42,8 @@ class Dashboard extends Admin_Controller
         $result = array('data' => array());
         $product_sku = $this->input->post('skucreate');
         $data = $this->model_products->getProductBySku($product_sku);
-        
-        foreach ($data as $key => $value) {
-            $result['data'][$key] = array(
-				$value['sku'],
-				$value['name']
-			);
-        }
 
-        echo json_encode($result);
+        echo json_encode($data);
     }
 
 	public function updatebysku()
