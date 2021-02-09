@@ -104,56 +104,62 @@ class Dashboard extends Admin_Controller
 		echo json_encode($products);
 	}
     
-    public function substractbysku()
+    public function substractbysku($id, $qty)
 	{      
 
         if(!in_array('updateProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
         
-        $this->form_validation->set_rules('skudelete', 'SKU', 'trim|required');
-        $this->form_validation->set_rules('qtydelete', 'Qty', 'trim|required');
-        
-        if ($this->form_validation->run() == TRUE) {
-            // true case
-            $product_sku = $this->input->post('skudelete');
-            $numrows = $this->model_products->getQtyProductBySku($product_sku);
-            if ($numrows==1){
-                $databysku = $this->model_products->getProductBySku($product_sku);
-                foreach ($databysku as $key => $value) {
-                    if (((int) $value['qty'] - (int)$this->input->post('qtydelete')) < 0) {
-                        $this->session->set_flashdata('successsku2', FALSE);
-                        $this->session->set_flashdata('errorsku2', 'No hay stock suficiente!');
-                        redirect('dashboard/' , 'refresh');
-                    } else {
-                        $newqty = (string)(((int) $value['qty']) - ((int)$this->input->post('qtydelete')));
-                        $data = array(
-                            'qty' => $newqty,
-                        );
-                        
-                        $update = $this->model_products->updatebysku($data, $product_sku);
-                        if($update == true) {
-                            $this->session->set_flashdata('successsku2', 'Successfully updated');
-                            redirect('dashboard/', 'refresh');
-                        }
-                        else {
+          
+    }
+    
+    public function multsubstract()
+    {
+        $count_product = count($this->input->post('namedelete')) -1 ;
+    	for($x = 0; $x < $count_product; $x++) {
+            $id = $this->input->post('namedelete')[$x];
+            $qty = $this->input->post('qtydelete')[$x];
+            if ($id!="") {
+                // true case
+                $product_id = $id;
+                $numrows = $this->model_products->getQtyProductById($product_id);
+                if ($numrows==1){
+                    $databysku = $this->model_products->getProductData($product_id);
+                    foreach ($databysku as $key => $value) {
+                        if ((((int) $value['qty']) - ((int)$qty)) < 0) {
                             $this->session->set_flashdata('successsku2', FALSE);
-                            $this->session->set_flashdata('errorsku2', 'Ha ocurrido un error inesperado');
+                            $this->session->set_flashdata('errorsku2', 'No hay stock suficiente!');
                             redirect('dashboard/' , 'refresh');
+                        } else {
+                            $newqty = (string)(((int) $value['qty']) - ((int)$qty));
+                            $data = array(
+                                'qty' => $newqty,
+                            );
+                            
+                            $update = $this->model_products->updatebysku($data, $product_sku);
+                            if($update == true) {
+                                $this->session->set_flashdata('successsku2', 'Successfully updated');
+                            }
+                            else {
+                                $this->session->set_flashdata('successsku2', FALSE);
+                                $this->session->set_flashdata('errorsku2', 'Ha ocurrido un error inesperado');
+                                redirect('dashboard/' , 'refresh');
+                            }
                         }
                     }
+                } else {
+                    $this->session->set_flashdata('successsku2', FALSE);
+                    $this->session->set_flashdata('errorsku2', 'Un producto no coincide con ninguno guardado!');
+                    redirect('dashboard/' , 'refresh');
                 }
-            } else {
-                $this->session->set_flashdata('successsku2', FALSE);
-                $this->session->set_flashdata('errorsku2', 'El producto no coincide con ninguno guardado!');
-                redirect('dashboard/' , 'refresh');
+                
             }
-            
+            else {
+                $this->session->set_flashdata('successsku2', FALSE);
+                $this->session->set_flashdata('errorsku2', 'Los valores ingresados están mal escritos');
+                redirect('dashboard/' , 'refresh');
+            } 
         }
-        else {
-            $this->session->set_flashdata('successsku2', FALSE);
-            $this->session->set_flashdata('errorsku2', 'Los valores ingresados están mal escritos');
-            redirect('dashboard/' , 'refresh');
-        }   
-	}
+    }
 }

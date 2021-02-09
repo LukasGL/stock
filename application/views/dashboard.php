@@ -153,17 +153,10 @@
               <h3 class="box-title">Add Order</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="<?php base_url('dashboard/substractmultiplebysku') ?>" method="post" class="form-horizontal">
+            <form role="form" action="<?php echo base_url('dashboard/multsubstract') ?>" method="post" class="form-horizontal">
                 <div class="box-body">
 
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('Y-m-d') ?></label>
-                  </div>
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('h:i a') ?></label>
-                  </div>
-
-                  <br /> <br/>
+                  
                   <table class="table table-bordered" id="product_info_table">
                     <thead>
                       <tr>
@@ -179,8 +172,9 @@
                       <tr id="row_1">
                         <td>
                         <input type="text" class="form-control" id="skudelete_1" oninput="selectProductBySku('1')" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />
+                    
                           </td>
-                          <td><select class="form-control select_group product" data-row-id="row_1" id="namedelete_1" name="namedelete[]" style="width:100%;" onchange="selectProductByName('1');" required>
+                          <td><select class="form-control select_group product" data-row-id="row_1" id="namedelete_1" name="namedelete[]" style="width:100%;" onchange="selectProductByName('1');">
                             <option value=""></option>
                             <?php foreach ($products as $k => $v): ?>
                               <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
@@ -205,7 +199,9 @@
                   </div>
                 </div>
                 <!-- /.box-body -->
-
+                <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
               
               </form>
             <!-- /.box-body -->
@@ -289,10 +285,10 @@
             data:{skucreate:$("#skudelete_"+row_id).val()},
             dataType: 'json',
             success: function(data) {
-                if (data!=null) {
-                console.log(data);   
+                if (data!=null) { 
                 $("#amountdelete_"+row_id).val(data.price);
                 $("#namedelete_"+row_id).val(data.id).change();
+                $("#namedelete_"+row_id).prop( "required", true );
                 //if (typeof table != "undefined"){
                   //namedelete.value = table[1];
                 //} else {
@@ -325,6 +321,7 @@
             $("#skudelete_"+row_id).val(response.sku);  
             $("#skudelete_"+row_id).prop( "disabled", true );
             $("#amountdelete_"+row_id).val(response.price);
+            $("#namedelete_"+row_id).prop( "required", true );
             newRow();
           } // /success
         }); // /ajax function to fetch the product data 
@@ -346,7 +343,7 @@
                         '<td>' +
                         '<input type="text" class="form-control" id="skudelete_'+row_id+'" oninput="selectProductBySku(\''+row_id+'\')" name="skudelete[]" placeholder="Enter sku" autocomplete="off" />' +
                           '</td>' +
-                          '<td><select class="form-control select_group product" data-row-id="row_'+row_id+'" id="namedelete_'+row_id+'" name="namedelete[]" style="width:100%;" onchange="selectProductByName(\''+row_id+'\');" required>' +
+                          '<td><select class="form-control select_group product" data-row-id="row_'+row_id+'" id="namedelete_'+row_id+'" name="namedelete[]" style="width:100%;" onchange="selectProductByName(\''+row_id+'\');">' +
                             '<option value=""></option>';
                 $.each(JSON.parse(response), function(index, value) {
                   html += '<option value="'+value.id+'">'+value.name+'</option>';

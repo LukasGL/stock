@@ -37,6 +37,15 @@ class Model_products extends CI_Model
 		}
 	}
 
+	public function getQtyProductById($id)
+	{
+		if ($id){
+			$sql = "SELECT * FROM products where id = ?";
+			$query = $this->db->query($sql, array($id));
+			return $query->num_rows();
+		}
+	}
+
 	public function getProductBySku($sku)
 	{
 		if ($sku){
