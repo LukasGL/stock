@@ -36,6 +36,59 @@
 
 
         <div class="box">
+              <?php if($this->session->flashdata('successsku')): ?>
+                  <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $this->session->flashdata('successsku'); ?>
+                  </div>
+                <?php elseif($this->session->flashdata('errorsku')): ?>
+                  <div class="alert alert-error alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <?php echo $this->session->flashdata('errorsku'); ?>
+                  </div>
+                <?php endif; ?>
+                <?php $this->session->set_flashdata('errorsku', FALSE) ?>
+                <?php $this->session->set_flashdata('successsku', FALSE) ?>
+              <div class="box-header">
+                <h3 class="box-title">Añadir Producto(s) ya existentes</h3>
+              </div>
+              <!-- /.box-header -->
+              <form role="form" action="<?php echo base_url('products/updatebyid') ?>" method="post" enctype="multipart/form-data">
+                  <div class="box-body">
+
+                    <?php echo validation_errors(); ?>
+
+                    <div class="form-group">
+                      <label for="sku_create">SKU</label>
+                      <input oninput="selectProductBySku()" type="text" class="form-control" id="skucreate" name="skucreate" placeholder="Enter sku" autocomplete="off" required />
+                    </div>
+
+                    <div>
+                      <label for="sku_create">Nombre del producto</label>
+                      <select class="form-control select_group product" data-row-id="row_1" id="namecreate" name="namecreate" style="width:100%;" onchange="selectProductByName();" required>
+                        <option value=" "></option>
+                        <?php foreach ($products as $k => $v): ?>
+                          <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                        <?php endforeach ?>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="qty_create">Qty</label>
+                      <input value="1"  type="text" class="form-control" id="qtycreate" name="qtycreate" placeholder="Enter Qty" autocomplete="off"  required/>
+                    </div>
+
+                  </div>
+                  <!-- /.box-body -->
+
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </form>
+              <!-- /.box-body -->
+            </div>
+
+        <div class="box">
           <div class="box-header">
             <h3 class="box-title">Add Product</h3>
           </div>
@@ -153,6 +206,9 @@
 <!-- /.content-wrapper -->
 
 <script type="text/javascript">
+  
+  var base_url = "<?php echo base_url(); ?>";
+
   $(document).ready(function() {
     $(".select_group").select2();
     $("#description").wysihtml5();
@@ -182,4 +238,51 @@
     });
 
   });
+
+  function selectProductBySku(){
+      if ($("#skucreate").val()!=""){
+          $.ajax({
+            url: base_url + 'dashboard/getbysku',
+            type: 'post',
+            data:{skucreate:$("#skucreate").val()},
+            dataType: 'json',
+            success: function(data) {
+                if (data!=null) { 
+                $("#namecreate").val(data.id).change();
+                //if (typeof table != "undefined"){
+                  //namedelete.value = table[1];
+                //} else {
+                  //namedelete.value = "";
+                //}
+                } else {
+                  $("#namecreate").val([]).change();
+                }
+            },
+            error: function(thrownError) {
+                alert(JSON.stringify(thrownError));
+            }
+            
+        });
+      } else {
+        $("#namecreate").val([]).change();
+      }
+    }
+
+    function selectProductByName(){
+      var product_id = $("#namecreate").val();    
+      if(product_id == "") {
+        $("#skucreate").val("");
+      } else {
+        $.ajax({
+          url: base_url + 'orders/getProductValueById',
+          type: 'post',
+          data: {product_id : product_id},
+          dataType: 'json',
+          success:function(response) {
+            // setting the rate value into the rate input field
+            $("#skucreate").val(response.sku);
+          } // /success
+        }); // /ajax function to fetch the product data 
+      }
+    }
 </script>

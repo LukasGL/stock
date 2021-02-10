@@ -87,53 +87,7 @@
         </div>
         <!-- /.row -->
       <?php endif; ?>
-          <div class="box">
-              <?php if($this->session->flashdata('successsku')): ?>
-                  <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php echo $this->session->flashdata('successsku'); ?>
-                  </div>
-                <?php elseif($this->session->flashdata('errorsku')): ?>
-                  <div class="alert alert-error alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <?php echo $this->session->flashdata('errorsku'); ?>
-                  </div>
-                <?php endif; ?>
-                <?php $this->session->set_flashdata('errorsku', FALSE) ?>
-                <?php $this->session->set_flashdata('successsku', FALSE) ?>
-              <div class="box-header">
-                <h3 class="box-title">Añadir Producto(s) ya existentes</h3>
-              </div>
-              <!-- /.box-header -->
-              <form role="form" action="<?php echo base_url('dashboard/updatebysku') ?>" method="post" enctype="multipart/form-data">
-                  <div class="box-body">
-
-                    <?php echo validation_errors(); ?>
-
-                    <div class="form-group">
-                      <label for="sku_create">SKU</label>
-                      <input type="text" class="form-control" id="skucreate" name="skucreate" placeholder="Enter sku" autocomplete="off" />
-                    </div>
-
-                    <div>
-                      <label for="sku_create">Nombre del producto</label>
-                      <input type="text" class="form-control" id="namecreate" name="namecreate" placeholder="Enter sku" autocomplete="off" disabled />
-                    </div>
-
-                    <div class="form-group">
-                      <label for="qty_create">Qty</label>
-                      <input  type="text" class="form-control" id="qtycreate" name="qtycreate" placeholder="Enter Qty" autocomplete="off" />
-                    </div>
-
-                  </div>
-                  <!-- /.box-body -->
-
-                  <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                  </div>
-                </form>
-              <!-- /.box-body -->
-            </div>
+          
 <!--     Remover productos multiples                       -->
           <div class="box">
             <?php if($this->session->flashdata('successsku2')): ?>
@@ -243,30 +197,6 @@
               namecreate.value = table[1];
             } else {
               namecreate.value = "";
-            }
-        },
-        error: function(thrownError) {
-            alert(JSON.stringify(thrownError));
-        }
-        
-    });
-      }
-    });
-
-    $(skudelete).on('input',function(e){
-      if ($(skudelete).val()!=""){
-      $.ajax({
-        url: "<?php echo base_url('dashboard/getbysku') ?>",
-        type: 'POST',
-        data:{skucreate:$(skudelete).val()},
-        dataType: 'text',
-        cache: false,
-        success: function(data) {
-            var table = (JSON.parse(data).data)[0];
-            if (typeof table != "undefined"){
-              namedelete.value = table[1];
-            } else {
-              namedelete.value = "";
             }
         },
         error: function(thrownError) {

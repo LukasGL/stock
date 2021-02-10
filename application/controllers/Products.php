@@ -145,6 +145,7 @@ class Products extends Admin_Controller
         		$attributes_final_data[$k]['attribute_value'] = $value;
         	}
 
+            $this->data['products'] = $this->model_products->getActiveProductData(); 
         	$this->data['attributes'] = $attributes_final_data;
 			$this->data['brands'] = $this->model_brands->getActiveBrands();        	
 			$this->data['category'] = $this->model_category->getActiveCategroy();        	
@@ -266,6 +267,53 @@ class Products extends Admin_Controller
             $this->render_template('products/edit', $this->data); 
         }   
 	}
+
+    public function updatebyid()
+	{      
+
+        if(!in_array('updateProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+        
+        $this->form_validation->set_rules('skucreate', 'SKU', 'trim|required');
+        $this->form_validation->set_rules('qtycreate', 'Qty', 'trim|required');
+        
+        if ($this->form_validation->run() == TRUE) {
+            // true case
+            $product_id = $this->input->post('namecreate');
+            $numrows = $this->model_products->getQtyProductById($product_id);
+            if ($numrows==1){
+                $databysku = $this->model_products->getProductById($product_id);
+                foreach ($databysku as $key => $value) {
+                    $newqty = (string)(((int)$this->input->post('qtycreate')) + ((int) $value['qty']));
+                    $data = array(
+                        'qty' => $newqty,
+                    );
+                    
+                    $update = $this->model_products->updatebyid($data, $product_id);
+                    if($update == true) {
+                        $this->session->set_flashdata('successsku', 'Successfully updated');
+                        redirect('products/create', 'refresh');
+                    }
+                    else {
+                        $this->session->set_flashdata('successsku', FALSE);
+                        $this->session->set_flashdata('errorsku', 'Ha ocurrido un error inesperado');
+                        redirect('products/create' , 'refresh');
+                    }
+                }
+            } else {
+                $this->session->set_flashdata('successsku', FALSE);
+                $this->session->set_flashdata('errorsku', 'El producto no coincide con ninguno guardado!');
+                redirect('products/create' , 'refresh');
+            }
+            
+        }
+        else {
+            $this->session->set_flashdata('successsku', FALSE);
+            $this->session->set_flashdata('errorsku', 'Los valores ingresados están mal escritos');
+            redirect('products/create' , 'refresh');
+        }   
+    }
 
     /*
     * It removes the data from the database

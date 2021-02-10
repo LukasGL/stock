@@ -93,6 +93,53 @@ class Dashboard extends Admin_Controller
         }   
     }
 
+    public function updatebyid()
+	{      
+
+        if(!in_array('updateProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+        
+        $this->form_validation->set_rules('skucreate', 'SKU', 'trim|required');
+        $this->form_validation->set_rules('qtycreate', 'Qty', 'trim|required');
+        
+        if ($this->form_validation->run() == TRUE) {
+            // true case
+            $product_id = $this->input->post('idcreate');
+            $numrows = $this->model_products->getQtyProductById($product_id);
+            if ($numrows==1){
+                $databysku = $this->model_products->getProductById($product_id);
+                foreach ($databysku as $key => $value) {
+                    $newqty = (string)(((int)$this->input->post('qtycreate')) + ((int) $value['qty']));
+                    $data = array(
+                        'qty' => $newqty,
+                    );
+                    
+                    $update = $this->model_products->updatebyid($data, $product_id);
+                    if($update == true) {
+                        $this->session->set_flashdata('successsku', 'Successfully updated');
+                        redirect('dashboard/', 'refresh');
+                    }
+                    else {
+                        $this->session->set_flashdata('successsku', FALSE);
+                        $this->session->set_flashdata('errorsku', 'Ha ocurrido un error inesperado');
+                        redirect('products/' , 'refresh');
+                    }
+                }
+            } else {
+                $this->session->set_flashdata('successsku', FALSE);
+                $this->session->set_flashdata('errorsku', 'El producto no coincide con ninguno guardado!');
+                redirect('dashboard/' , 'refresh');
+            }
+            
+        }
+        else {
+            $this->session->set_flashdata('successsku', FALSE);
+            $this->session->set_flashdata('errorsku', 'Los valores ingresados están mal escritos');
+            redirect('dashboard/' , 'refresh');
+        }   
+    }
+
     /*
 	* It gets the all the active product inforamtion from the product table 
 	* This function is used in the order page, for the product selection in the table
