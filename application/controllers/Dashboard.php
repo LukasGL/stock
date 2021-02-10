@@ -125,8 +125,8 @@ class Dashboard extends Admin_Controller
                 $product_id = $id;
                 $numrows = $this->model_products->getQtyProductById($product_id);
                 if ($numrows==1){
-                    $databysku = $this->model_products->getProductData($product_id);
-                    foreach ($databysku as $key => $value) {
+                    $databyid = $this->model_products->getProductById($product_id);
+                    foreach ($databyid as $key => $value) {
                         if ((((int) $value['qty']) - ((int)$qty)) < 0) {
                             $this->session->set_flashdata('successsku2', FALSE);
                             $this->session->set_flashdata('errorsku2', 'No hay stock suficiente!');
@@ -137,7 +137,7 @@ class Dashboard extends Admin_Controller
                                 'qty' => $newqty,
                             );
                             
-                            $update = $this->model_products->updatebysku($data, $product_sku);
+                            $update = $this->model_products->updatebyid($data, $product_id);
                             if($update == true) {
                                 $this->session->set_flashdata('successsku2', 'Successfully updated');
                             }
@@ -161,5 +161,6 @@ class Dashboard extends Admin_Controller
                 redirect('dashboard/' , 'refresh');
             } 
         }
+        redirect('dashboard/', 'refresh');
     }
 }

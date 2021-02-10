@@ -57,6 +57,17 @@ class Model_products extends CI_Model
 		return null;
 	}
 
+	public function getProductById($id)
+	{
+		if ($id){
+			$sql = "SELECT * FROM products WHERE id = ? ";
+			$query = $this->db->query($sql, array($id));
+			return $query->result_array();
+		}
+
+		return null;
+	}
+
 	public function create($data)
 	{
 		if($data) {
@@ -78,6 +89,15 @@ class Model_products extends CI_Model
 	{
 		if($data && $sku) {
 			$this->db->where('sku', $sku);
+			$update = $this->db->update('products', $data);
+			return ($update == true) ? true : false;
+		}
+	}
+
+	public function updatebyid($data, $id)
+	{
+		if($data && $id) {
+			$this->db->where('id', $id);
 			$update = $this->db->update('products', $data);
 			return ($update == true) ? true : false;
 		}
