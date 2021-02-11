@@ -5,12 +5,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Control panel</small>
+        Inicio
+        <small></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
       </ol>
     </section>
 
@@ -30,7 +29,7 @@
               <div class="inner">
                 <h3><?php echo $total_products ?></h3>
 
-                <p>Total Products</p>
+                <p>Total de Productos</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -45,7 +44,7 @@
               <div class="inner">
                 <h3><?php echo $total_paid_orders ?></h3>
 
-                <p>Total Paid Orders</p>
+                <p>Total de Ordenes Pagadas</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -60,7 +59,7 @@
               <div class="inner">
                 <h3><?php echo $total_users; ?></h3>
 
-                <p>Total Users</p>
+                <p>Total de Usuarios</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-people"></i>
@@ -75,7 +74,7 @@
               <div class="inner">
                 <h3><?php echo $total_stores ?></h3>
 
-                <p>Total Stores</p>
+                <p>Total de Tiendas</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-home"></i>
@@ -104,7 +103,7 @@
             <?php $this->session->set_flashdata('errorsku2', FALSE) ?>
             <?php $this->session->set_flashdata('successsku2', FALSE) ?>
             <div class="box-header">
-              <h3 class="box-title">Add Order</h3>
+              <h3 class="box-title">Quitar Productos de Inventario</h3>
             </div>
             <!-- /.box-header -->
             <form role="form" action="<?php echo base_url('dashboard/multsubstract') ?>" method="post" class="form-horizontal">

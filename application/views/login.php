@@ -33,11 +33,11 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="<?php echo base_url('auth'); ?>"><b>Login</b></a>
+    <a href="<?php echo base_url('auth'); ?>"><b>Iniciar Sesión</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Inicia sesión para ingresar</p>
 
     <?php echo validation_errors(); ?>  
 
@@ -51,20 +51,20 @@
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off">
+        <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña" autocomplete="off">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> Remember Me
+              <input type="checkbox"> Recordar
             </label>
           </div>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
         </div>
         <!-- /.col -->
       </div>
@@ -91,5 +91,12 @@
     });
   });
 </script>
+<style type="text/css">
+.login-page {
+background: url("<?php echo base_url('assets/images/localohmydogtalca.jpg') ?>") no-repeat center center fixed;
+background-size: cover;
+backdrop-filter: blur(3px);
+}
+</style>
 </body>
 </html>
