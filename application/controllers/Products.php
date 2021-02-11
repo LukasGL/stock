@@ -81,6 +81,52 @@ class Products extends Admin_Controller
 		echo json_encode($result);
 	}	
 
+    public function fetchProductDataByCategory()
+	{
+		$result = array('data' => array());
+        $id = $this->input->post("d.category_id");
+		$data = $this->model_products->getProductDataByCategory($id);
+
+		foreach ($data as $key => $value) {
+
+            $store_data = $this->model_stores->getStoresData($value['store_id']);
+			// button
+            $buttons = '';
+            if(in_array('updateProduct', $this->permission)) {
+    			$buttons .= '<a href="'.base_url('products/update/'.$value['id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+            }
+
+            if(in_array('deleteProduct', $this->permission)) { 
+    			$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+            }
+			
+
+			$img = '<img src="'.base_url($value['image']).'" alt="'.$value['name'].'" class="img-circle" width="50" height="50" />';
+
+            $availability = ($value['availability'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-warning">Inactive</span>';
+
+            $qty_status = '';
+            if($value['qty'] <= 10) {
+                $qty_status = '<span class="label label-warning">Low !</span>';
+            } else if($value['qty'] <= 0) {
+                $qty_status = '<span class="label label-danger">Out of stock !</span>';
+            }
+
+
+			$result['data'][$key] = array(
+				$value['sku'],
+				$value['name']. ' ' . $qty_status,
+				$value['price'],
+                $value['qty'] ,
+                $store_data['name'],
+				$availability,
+				$buttons
+			);
+		} // /foreach
+
+		echo json_encode($result);
+	}	
+
     /*
     * If the validation is not valid, then it redirects to the create page.
     * If the validation for each input field is valid then it inserts the data into the database 
@@ -153,6 +199,19 @@ class Products extends Admin_Controller
 
             $this->render_template('products/create', $this->data);
         }	
+	}
+
+    /* 
+    * It only redirects to the manage product page
+    */
+	public function admincat()
+	{
+        if(!in_array('viewProduct', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $this->data['categories'] = $this->model_category->getActiveCategroy();
+		$this->render_template('products/admincat', $this->data);	
 	}
 
     /*

@@ -21,6 +21,20 @@ class Model_products extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getProductDataByCategory($id = null)
+	{
+		if($id) {
+			$id = '%"'.$id.'"%';
+			$sql = "SELECT * FROM products WHERE category_id LIKE ?";
+			$query = $this->db->query($sql, array($id));
+			return $query->result_array();
+		}
+
+		$sql = "SELECT * FROM products ORDER BY id DESC";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	public function getActiveProductData()
 	{
 		$sql = "SELECT * FROM products WHERE availability = ? ORDER BY id DESC";
