@@ -45,12 +45,12 @@
 
                 <?php echo validation_errors(); ?>
 
-                <div class="form-group">
+                <div class="form-group hidden">
                   <label>Image Preview: </label>
                   <img src="<?php echo base_url() . $product_data['image'] ?>" width="150" height="150" class="img-circle">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group hidden">
                   <label for="product_image">Update Image</label>
                   <div class="kv-avatar">
                       <div class="file-loading">
@@ -106,7 +106,9 @@
                   <?php $brand_data = json_decode($product_data['brand_id']); ?>
                   <select class="form-control select_group" id="brands" name="brands[]" multiple="multiple">
                     <?php foreach ($brands as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($v['id'], $brand_data)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      
+                        <option value="<?php echo $v['id'] ?>" <?php if($brand_data!=null && (in_array($v['id'], $brand_data))) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      
                     <?php endforeach ?>
                   </select>
                 </div>
@@ -116,7 +118,7 @@
                   <?php $category_data = json_decode($product_data['category_id']); ?>
                   <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
                     <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($v['id'], $category_data)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      <option value="<?php echo $v['id'] ?>" <?php if($category_data!=null && in_array($v['id'], $category_data)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>
@@ -145,7 +147,7 @@
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Back</a>
+                <a href="javascript:history.go(-1)" class="btn btn-warning">Back</a>
               </div>
             </form>
           <!-- /.box-body -->

@@ -33,7 +33,8 @@
             <?php echo $this->session->flashdata('error'); ?>
           </div>
         <?php endif; ?>
-
+        <?php $this->session->set_flashdata('error', FALSE) ?>
+        <?php $this->session->set_flashdata('success', FALSE) ?>
         <?php if(in_array('createProduct', $user_permission)): ?>
           <a href="<?php echo base_url('products/create') ?>" class="btn btn-primary">Add Product</a>
           <br /> <br />
