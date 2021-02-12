@@ -31,9 +31,10 @@
 
 </head>
 <body class="hold-transition login-page">
+<div class="login-image"></div>
 <div class="login-box">
   <div class="login-logo">
-    <a href="<?php echo base_url('auth'); ?>"><b>Iniciar Sesión</b></a>
+    <a ><b>Iniciar Sesión</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -92,10 +93,24 @@
   });
 </script>
 <style type="text/css">
-.login-page {
-background: url("<?php echo base_url('assets/images/localohmydogtalca.jpg') ?>") no-repeat center center fixed;
-background-size: cover;
-backdrop-filter: blur(3px);
+.login-image {
+  /* The image used */
+  background-image: url("<?php echo base_url('assets/images/localohmydogtalca.jpg') ?>");
+
+  /* Add the blur effect */
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.login-box {
+  transform: translate(0%, -300%);
 }
 </style>
 </body>

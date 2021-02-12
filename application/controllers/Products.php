@@ -84,7 +84,7 @@ class Products extends Admin_Controller
     public function fetchProductDataByCategory()
 	{
 		$result = array('data' => array());
-        $id = $this->input->post("d.category_id");
+        $id = $this->input->get("category_id");
 		$data = $this->model_products->getProductDataByCategory($id);
 
 		foreach ($data as $key => $value) {

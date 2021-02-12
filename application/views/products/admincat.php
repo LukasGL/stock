@@ -120,7 +120,6 @@ $(document).ready(function() {
       "url": base_url + 'products/fetchProductDataByCategory',
       "data": function (d) {
         d.category_id = $('#category').val();
-        console.log(d.category_id);
       }},
     'order': [],
     'columns': [
