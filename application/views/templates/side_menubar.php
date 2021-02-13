@@ -103,7 +103,7 @@
                 <li id="manageProductNav"><a href="<?php echo base_url('products') ?>"><i class="fa fa-circle-o"></i> Administrar Productos</a></li>
                 <?php endif; ?>
                 <?php if(in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
-                <li id="manageProductNav"><a href="<?php echo base_url('products/admincat') ?>"><i class="fa fa-circle-o"></i> Adm. Productos por Categoría</a></li>
+                <li id="manageProductByCatNav"><a href="<?php echo base_url('products/admincat') ?>"><i class="fa fa-circle-o"></i> Adm. Productos por Categoría</a></li>
                 <?php endif; ?>
               </ul>
             </li>
@@ -146,7 +146,9 @@
         
 
         <!-- <li class="header">Settings</li> -->
-
+        <?php if(in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
+          <li id="historyNav"><a href="<?php echo base_url('history') ?>"><i class="fa fa-circle-o"></i><span> Historial</span></a></li>
+        <?php endif; ?>
         <?php if(in_array('viewProfile', $user_permission)): ?>
           <li><a href="<?php echo base_url('users/profile/') ?>"><i class="fa fa-user-o"></i> <span>Perfil</span></a></li>
         <?php endif; ?>

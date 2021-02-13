@@ -13,6 +13,7 @@ class Products extends Admin_Controller
 		$this->data['page_title'] = 'Products';
 
 		$this->load->model('model_products');
+        $this->load->model('model_history');
 		$this->load->model('model_brands');
 		$this->load->model('model_category');
 		$this->load->model('model_stores');
@@ -348,7 +349,21 @@ class Products extends Admin_Controller
                     $data = array(
                         'qty' => $newqty,
                     );
+
+                    $timezone = new DateTimeZone("-3:00");
+
+                    date_default_timezone_set('America/Santiago');
+
+                    $datahistory = array(
+                        'id_product' => $product_id,
+                        'name' => $value['name'],
+                        'sku' => $value['sku'],
+                        'qtybefore' => $value['qty'],
+                        'qtyafter' => $newqty,
+                        'date' => date("Y-m-d H:i:s")
+                    );
                     
+                    $historyupdate = $this->model_history->create($datahistory);
                     $update = $this->model_products->updatebyid($data, $product_id);
                     if($update == true) {
                         $this->session->set_flashdata('successsku', 'Successfully updated');
