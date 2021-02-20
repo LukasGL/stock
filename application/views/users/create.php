@@ -5,12 +5,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Manage
-        <small>Users</small>
+        Administrar
+        <small>Usuarios</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Users</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li class="active">Usuarios</li>
       </ol>
     </section>
 
@@ -31,10 +31,12 @@
               <?php echo $this->session->flashdata('error'); ?>
             </div>
           <?php endif; ?>
+          <?php $this->session->set_flashdata('error', FALSE) ?>
+          <?php $this->session->set_flashdata('success', FALSE) ?>
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Add User</h3>
+              <h3 class="box-title">Añadir Usuario</h3>
             </div>
             <form role="form" action="<?php base_url('users/create') ?>" method="post">
               <div class="box-body">
@@ -42,9 +44,9 @@
                 <?php echo validation_errors(); ?>
 
                 <div class="form-group">
-                  <label for="groups">Groups</label>
+                  <label for="groups">Grupo</label>
                   <select class="form-control" id="groups" name="groups">
-                    <option value="">Select Groups</option>
+                    <option value="">Seleccionar Grupo</option>
                     <?php foreach ($group_data as $k => $v): ?>
                       <option value="<?php echo $v['id'] ?>"><?php echo $v['group_name'] ?></option>
                     <?php endforeach ?>
@@ -52,8 +54,8 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" id="username" name="username" placeholder="Username" autocomplete="off">
+                  <label for="username">Nombre de Usuario</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario" autocomplete="off">
                 </div>
 
                 <div class="form-group">
@@ -62,35 +64,35 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="text" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off">
+                  <label for="password">Contraseña</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="cpassword">Confirm password</label>
-                  <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirm Password" autocomplete="off">
+                  <label for="cpassword">Confirmar Contraseña</label>
+                  <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="Confirmar Contraseña" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="fname">First name</label>
-                  <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" autocomplete="off">
+                  <label for="fname">Nombre</label>
+                  <input type="text" class="form-control" id="fname" name="fname" placeholder="Nombre" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="lname">Last name</label>
-                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" autocomplete="off">
+                  <label for="lname">Apellido</label>
+                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Apellido" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                  <label for="phone">Phone</label>
-                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" autocomplete="off">
+                  <label for="phone">Teléfono</label>
+                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono" autocomplete="off">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group hidden">
                   <label for="gender">Gender</label>
                   <div class="radio">
                     <label>
-                      <input type="radio" name="gender" id="male" value="1">
+                      <input type="radio" name="gender" id="male" value="1" checked>
                       Male
                     </label>
                     <label>
@@ -104,8 +106,8 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Back</a>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="<?php echo base_url('users/') ?>" class="btn btn-warning">Atras</a>
               </div>
             </form>
           </div>

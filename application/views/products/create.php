@@ -5,12 +5,12 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Manage
-      <small>Products</small>
+      Administrar
+      <small>Productos</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Products</li>
+      <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li class="active">Productos</li>
     </ol>
   </section>
 
@@ -60,7 +60,7 @@
 
                     <div class="form-group">
                       <label for="sku_create">SKU</label>
-                      <input oninput="selectProductBySku()" type="text" class="form-control" id="skucreate" name="skucreate" placeholder="Enter sku" autocomplete="off" required />
+                      <input oninput="selectProductBySku()" type="text" class="form-control" id="skucreate" name="skucreate" placeholder="Ingresar SKU" autocomplete="off" required />
                     </div>
 
                     <div>
@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="qty_create">Qty</label>
+                      <label for="qty_create">Cantidad</label>
                       <input value="1"  type="text" class="form-control" id="qtycreate" name="qtycreate" placeholder="Enter Qty" autocomplete="off"  required/>
                     </div>
 
@@ -82,7 +82,7 @@
                   <!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary">Añadir</button>
                   </div>
                 </form>
               <!-- /.box-body -->
@@ -90,7 +90,7 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Add Product</h3>
+            <h3 class="box-title">Añadir Producto Nuevo</h3>
           </div>
           <!-- /.box-header -->
           <form role="form" action="<?php base_url('products/create') ?>" method="post" enctype="multipart/form-data">
@@ -98,7 +98,7 @@
 
                 <?php echo validation_errors(); ?>
 
-                <div class="form-group">
+                <div class="form-group hidden">
 
                   <label for="product_image">Image</label>
                   <div class="kv-avatar">
@@ -109,7 +109,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="product_name">Product name</label>
+                  <label for="product_name">Nombre del Producto</label>
                   <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" autocomplete="off"/>
                 </div>
 
@@ -119,17 +119,17 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="price">Price</label>
+                  <label for="price">Precio</label>
                   <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" autocomplete="off" />
                 </div>
 
                 <div class="form-group">
-                  <label for="qty">Qty</label>
+                  <label for="qty">Cantidad</label>
                   <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" autocomplete="off" />
                 </div>
 
                 <div class="form-group">
-                  <label for="description">Description</label>
+                  <label for="description">Descripción</label>
                   <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter 
                   description" autocomplete="off">
                   </textarea>
@@ -148,8 +148,8 @@
                   <?php endforeach ?>
                 <?php endif; ?>
 
-                <div class="form-group">
-                  <label for="brands">Brands</label>
+                <div class="form-group hidden">
+                  <label for="brands">Marcas</label>
                   <select class="form-control select_group" id="brands" name="brands[]" multiple="multiple">
                     <?php foreach ($brands as $k => $v): ?>
                       <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
@@ -158,7 +158,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="category">Category</label>
+                  <label for="category">Categorías</label>
                   <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
                     <?php foreach ($category as $k => $v): ?>
                       <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
@@ -167,7 +167,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="store">Store</label>
+                  <label for="store">Tienda</label>
                   <select class="form-control select_group" id="store" name="store">
                     <?php foreach ($stores as $k => $v): ?>
                       <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
@@ -176,9 +176,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="store">Availability</label>
+                  <label for="store">Disponibilidad</label>
                   <select class="form-control" id="availability" name="availability">
-                    <option value="1">Yes</option>
+                    <option value="1">Si</option>
                     <option value="2">No</option>
                   </select>
                 </div>
@@ -187,8 +187,8 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="<?php echo base_url('products/') ?>" class="btn btn-warning">Back</a>
+                <button type="submit" class="btn btn-primary">Añadir Producto</button>
+                <a href="<?php echo base_url('products/') ?>" class="btn btn-warning">Atras</a>
               </div>
             </form>
           <!-- /.box-body -->

@@ -5,7 +5,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Administrar
+      Ver
       <small>Historial</small>
     </h1>
     <ol class="breadcrumb">
@@ -35,14 +35,10 @@
         <?php endif; ?>
         <?php $this->session->set_flashdata('error', FALSE) ?>
         <?php $this->session->set_flashdata('success', FALSE) ?>
-        <?php if(in_array('createProduct', $user_permission)): ?>
-          <a href="<?php echo base_url('products/create') ?>" class="btn btn-primary">Add Product</a>
-          <br /> <br />
-        <?php endif; ?>
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Manage Products</h3>
+            <h3 class="box-title">Ver Historial</h3>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -85,16 +81,16 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Remove Product</h4>
+        <h4 class="modal-title">Eliminar Fila</h4>
       </div>
 
       <form role="form" action="<?php echo base_url('history/undo') ?>" method="post" id="removeForm">
         <div class="modal-body">
-          <p>Do you really want to remove?</p>
+          <p>¿Quieres eliminar esta fila?</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="submit" class="btn btn-primary">Si</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
         </div>
       </form>
 

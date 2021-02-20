@@ -5,12 +5,12 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Manage
-      <small>Products</small>
+      Administrar
+      <small>Productos</small>
     </h1>
     <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Products</li>
+      <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li class="active">Productos</li>
     </ol>
   </section>
 
@@ -37,7 +37,7 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Edit Product</h3>
+            <h3 class="box-title">Editar Producto</h3>
           </div>
           <!-- /.box-header -->
           <form role="form" action="<?php base_url('products/update') ?>" method="post" enctype="multipart/form-data">
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="product_name">Product name</label>
+                  <label for="product_name">Nombre del Producto</label>
                   <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" value="<?php echo $product_data['name']; ?>"  autocomplete="off"/>
                 </div>
 
@@ -70,17 +70,17 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="price">Price</label>
+                  <label for="price">Precio</label>
                   <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" value="<?php echo $product_data['price']; ?>" autocomplete="off" />
                 </div>
 
                 <div class="form-group">
-                  <label for="qty">Qty</label>
+                  <label for="qty">Cantidad</label>
                   <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" value="<?php echo $product_data['qty']; ?>" autocomplete="off" />
                 </div>
 
                 <div class="form-group">
-                  <label for="description">Description</label>
+                  <label for="description">Descripción</label>
                   <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter 
                   description" autocomplete="off">
                     <?php echo $product_data['description']; ?>
@@ -101,8 +101,8 @@
                   <?php endforeach ?>
                 <?php endif; ?>
 
-                <div class="form-group">
-                  <label for="brands">Brands</label>
+                <div class="form-group hidden">
+                  <label for="brands">Marcas</label>
                   <?php $brand_data = json_decode($product_data['brand_id']); ?>
                   <select class="form-control select_group" id="brands" name="brands[]" multiple="multiple">
                     <?php foreach ($brands as $k => $v): ?>
@@ -114,7 +114,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="category">Category</label>
+                  <label for="category">Categoría(s)</label>
                   <?php $category_data = json_decode($product_data['category_id']); ?>
                   <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
                     <?php foreach ($category as $k => $v): ?>
@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="store">Store</label>
+                  <label for="store">Tienda</label>
                   <select class="form-control select_group" id="store" name="store">
                     <?php foreach ($stores as $k => $v): ?>
                       <option value="<?php echo $v['id'] ?>" <?php if($product_data['store_id'] == $v['id']) { echo "selected='selected'"; } ?> ><?php echo $v['name'] ?></option>
@@ -133,9 +133,9 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="store">Availability</label>
+                  <label for="store">Disponibilidad</label>
                   <select class="form-control" id="availability" name="availability">
-                    <option value="1" <?php if($product_data['availability'] == 1) { echo "selected='selected'"; } ?>>Yes</option>
+                    <option value="1" <?php if($product_data['availability'] == 1) { echo "selected='selected'"; } ?>>Si</option>
                     <option value="2" <?php if($product_data['availability'] != 1) { echo "selected='selected'"; } ?>>No</option>
                   </select>
                 </div>
@@ -146,8 +146,8 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="javascript:history.go(-1)" class="btn btn-warning">Back</a>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="javascript:history.go(-1)" class="btn btn-warning">Atras</a>
               </div>
             </form>
           <!-- /.box-body -->

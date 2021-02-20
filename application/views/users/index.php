@@ -5,12 +5,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Manage
-        <small>Users</small>
+        Administrar
+        <small>Usuarios</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Users</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li class="active">Usuarios</li>
       </ol>
     </section>
 
@@ -31,27 +31,29 @@
               <?php echo $this->session->flashdata('error'); ?>
             </div>
           <?php endif; ?>
+          <?php $this->session->set_flashdata('error', FALSE) ?>
+          <?php $this->session->set_flashdata('success', FALSE) ?>
           
           <?php if(in_array('createUser', $user_permission)): ?>
-            <a href="<?php echo base_url('users/create') ?>" class="btn btn-primary">Add User</a>
+            <a href="<?php echo base_url('users/create') ?>" class="btn btn-primary">Añadir Usuario</a>
             <br /> <br />
           <?php endif; ?>
 
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Manage Users</h3>
+              <h3 class="box-title">Administrar Usuarios</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="userTable" class="table table-bordered table-striped">
+              <table width="100%" id="userTable" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Username</th>
+                  <th>Nombre de Usuario</th>
                   <th>Email</th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Group</th>
+                  <th>Nombre</th>
+                  <th>Teléfono</th>
+                  <th>Grupo</th>
 
                   <?php if(in_array('updateUser', $user_permission) || in_array('deleteUser', $user_permission)): ?>
                   <th>Action</th>
@@ -100,8 +102,11 @@
   <!-- /.content-wrapper -->
 
   <script type="text/javascript">
+  
     $(document).ready(function() {
-      $('#userTable').DataTable();
+      $('#userTable').DataTable({
+        "scrollX": true
+        });
 
       $("#mainUserNav").addClass('active');
       $("#manageUserNav").addClass('active');

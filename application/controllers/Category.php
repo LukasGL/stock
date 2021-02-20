@@ -68,7 +68,7 @@ class Category extends Admin_Controller
 			}
 				
 
-			$status = ($value['active'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-warning">Inactive</span>';
+			$status = ($value['active'] == 1) ? '<span class="label label-success">Activa</span>' : '<span class="label label-warning">Inactiva</span>';
 
 			$result['data'][$key] = array(
 				$value['name'],
