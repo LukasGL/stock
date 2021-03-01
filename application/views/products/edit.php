@@ -40,7 +40,7 @@
             <h3 class="box-title">Editar Producto</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('products/update') ?>" method="post" enctype="multipart/form-data">
+          <form id="formedit" role="form" action="<?php base_url('products/update') ?>" method="post" enctype="multipart/form-data">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>
@@ -195,4 +195,12 @@
     });
 
   });
+
+  $('#formedit').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    return false;
+  }
+});
 </script>
