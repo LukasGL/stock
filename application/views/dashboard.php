@@ -106,15 +106,16 @@
               <h3 class="box-title">Quitar Productos de Inventario</h3>
             </div>
             <!-- /.box-header -->
-            <form role="form" action="<?php echo base_url('dashboard/multsubstract') ?>" method="post" class="form-horizontal">
+            <form id="formdash" role="form" action="<?php echo base_url('dashboard/multsubstract') ?>" method="post" class="form-horizontal">
                 <div class="box-body">
 
                   
                   <table class="table table-bordered" id="product_info_table">
                     <thead>
                       <tr>
-                        <th style="width:40%">SKU</th>
+                        <th style="width:30%">SKU</th>
                         <th style="width:40%">Producto</th>
+                        <th style="width:10%">Cantidad disponible</th>
                         <th style="width:10%">Cantidad</th>
                         <th style="width:20%">Precio unidad</th>
                         <th style="width:10%">Eliminar</th>
@@ -133,6 +134,10 @@
                               <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
                             <?php endforeach ?>
                           </select></td>
+                        
+                          <td>
+                            <input type="text"  name="qtydispdelete[]" id="qtydispdelete_1" class="form-control" autocomplete="off" disabled>
+                          </td>
                           <td>
                             <input type="text" value="1" name="qtydelete[]" id="qtydelete_1" class="form-control" autocomplete="off">
                           </td>
@@ -159,6 +164,29 @@
               </form>
             <!-- /.box-body -->
           </div>
+          <div class="box" style="margin-top: 15px;">
+          <div class="box-header">
+            <h3 class="box-title">Productos Favoritos</h3>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <table width="100%" id="manageTable" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Nombre del Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Tienda</th>
+                <th>Disponibilidad</th>
+                <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
+                  <th>Acción</th>
+                <?php endif; ?>
+              </tr>
+              </thead>
+
+            </table>
+          </div>
 <!--   END  Remover productos multiples                       -->
             
 
@@ -168,6 +196,32 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <?php if(in_array('deleteProduct', $user_permission)): ?>
+<!-- remove brand modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="removeModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Eliminar Producto</h4>
+      </div>
+
+      <form role="form" action="<?php echo base_url('products/remove') ?>" method="post" id="removeForm">
+        <div class="modal-body">
+          <p>¿Quieres eliminar definitavemnte este producto? (No se podrá recuperar)</p>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Si</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        </div>
+      </form>
+
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<?php endif; ?>
 
   <script type="text/javascript">
     var skucreate = document.getElementById("skucreate");
@@ -179,8 +233,38 @@
     $(document).ready(function() {
       $("#dashboardMainMenu").addClass('active');
       $(".product").select2();
+
+      $("#mainProductNav").addClass('active');
+      // initialize the datatable 
+      manageTable = $('#manageTable').DataTable({
+        'ajax': {
+          "url": base_url + 'products/fetchProductDataByCategory',
+          "data": function (d) {
+            d.category_id = "5";
+          }},
+        'order': [],
+        'columns': [
+          { 'type': 'html'},
+          { 'type': 'html'},
+          { 'type': 'html'},
+          { 'type': 'num'},
+          { 'type': 'html'},
+          { 'type': 'html'},
+          { 'type': 'html'},
+        ],
+        "scrollX": true,
+      });
+	
       
     }); 
+
+	$('#formdash').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    return false;
+  }
+});
     
     $(skucreate).on('input',function(e){
       if ($(skucreate).val()!=""){
@@ -216,6 +300,7 @@
             success: function(data) {
                 if (data!=null) { 
                 $("#amountdelete_"+row_id).val(data.price);
+                $("#qtydispdelete_"+row_id).val(data.qty);
                 $("#namedelete_"+row_id).val(data.id).change();
                 $("#namedelete_"+row_id).prop( "required", true );
                 //if (typeof table != "undefined"){
@@ -250,6 +335,7 @@
             $("#skudelete_"+row_id).val(response.sku);  
             $("#skudelete_"+row_id).prop( "disabled", true );
             $("#amountdelete_"+row_id).val(response.price);
+            $("#qtydispdelete_"+row_id).val(response.qty);
             $("#namedelete_"+row_id).prop( "required", true );
             newRow();
           } // /success
@@ -279,6 +365,9 @@
                 });
 
                 html += '</select></td>' +
+                          '<td>' +
+                            '<input type="text" name="qtydispdelete[]" id="qtydispdelete_'+row_id+'" class="form-control" autocomplete="off" disabled>' +
+                          '</td>' +
                           '<td>' +
                             '<input type="text" value="1" name="qtydelete[]" id="qtydelete_'+row_id+'" class="form-control" autocomplete="off">' +
                           '</td>' +

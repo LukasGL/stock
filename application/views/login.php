@@ -110,7 +110,7 @@
   background-size: cover;
 }
 .login-box {
-  transform: translate(0%, -300%);
+  transform: translate(0%, -200%);
 }
 </style>
 </body>

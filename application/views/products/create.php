@@ -53,7 +53,7 @@
                 <h3 class="box-title">Añadir Producto(s) ya existentes</h3>
               </div>
               <!-- /.box-header -->
-              <form role="form" action="<?php echo base_url('products/updatebyid') ?>" method="post" enctype="multipart/form-data">
+              <form id="formproduct" role="form" action="<?php echo base_url('products/updatebyid') ?>" method="post" enctype="multipart/form-data">
                   <div class="box-body">
 
                     <?php echo validation_errors(); ?>
@@ -93,7 +93,7 @@
             <h3 class="box-title">Añadir Producto Nuevo</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('products/create') ?>" method="post" enctype="multipart/form-data">
+          <form id="formnewproduct" role="form" action="<?php base_url('products/create') ?>" method="post" enctype="multipart/form-data">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>
@@ -238,6 +238,23 @@
     });
 
   });
+
+$('#formproduct').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    return false;
+  }
+});
+
+$('#formnewproduct').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    return false;
+  }
+});
+
 
   function selectProductBySku(){
       if ($("#skucreate").val()!=""){
